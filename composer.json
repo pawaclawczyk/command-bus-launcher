@@ -1,0 +1,14 @@
+{
+    "name": "clearcodehq/command-bus-launcher",
+    "description": "Console command to run commands of command bus",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Clearcode",
+            "email": "dev@clearcode.cc"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {}
+}
