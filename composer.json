@@ -9,6 +9,23 @@
             "email": "dev@clearcode.cc"
         }
     ],
-    "minimum-stability": "stable",
-    "require": {}
+    "require": {
+        "beberlei/assert": "~2.4",
+        "nesbot/carbon": "1.*",
+        "mathiasverraes/money": "~1.2",
+        "ramsey/uuid": "~3.0",
+
+        "simple-bus/message-bus": "~2.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "ClearcodeHQ\\CommandBusLauncher\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4" : { "ClearcodeHQ\\CommandBusLauncher\\Tests\\" : "tests" }
+    },
+    "require-dev": {
+        "phpunit/phpunit" : "~5.0"
+    }
 }
