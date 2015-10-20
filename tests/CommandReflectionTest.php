@@ -1,9 +1,12 @@
 <?php
 
-namespace ClearcodeHQ\CommandBusLauncher\Tests;
+namespace tests\ClearcodeHQ\CommandBusLauncher;
 
+use ClearcodeHQ\CommandBusLauncher\ArgumentsProcessor;
 use ClearcodeHQ\CommandBusLauncher\CommandReflection;
-use ClearcodeHQ\CommandBusLauncher\Tests\Mocks\DummyCommand;
+use ClearcodeHQ\CommandBusLauncher\ValueConveter\UuidConveter;
+use tests\ClearcodeHQ\CommandBusLauncher\Mocks\DummyCommand;
+use tests\ClearcodeHQ\CommandBusLauncher\Mocks\DummyCommandWithUuid;
 
 class CommandReflectionTest extends \PHPUnit_Framework_TestCase
 {
@@ -33,12 +36,25 @@ class CommandReflectionTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function it_does_not_create_command_when_invalid_arguments_are_given()
+    {
+        $argumentProcessor = new ArgumentsProcessor([UuidConveter::class]);
+        $commandReflection = CommandReflection::fromClass(DummyCommandWithUuid::class);
+
+        $commandParameters = ['lorem ipsum', 2];
+        $command           = $commandReflection->createCommand($commandParameters, $argumentProcessor);
+    }
+
+    /**
+     * @test
+     */
     public function it_create_new_command_instance()
     {
+        $argumentProcessor = new ArgumentsProcessor([new UuidConveter()]);
         $commandReflection = CommandReflection::fromClass(DummyCommand::class);
 
         $commandParameters = ['lorem ipsum', 2];
-        $command           = $commandReflection->createCommand($commandParameters);
+        $command           = $commandReflection->createCommand($commandParameters, $argumentProcessor);
 
         \PHPUnit_Framework_Assert::assertInstanceOf(DummyCommand::class, $command);
     }

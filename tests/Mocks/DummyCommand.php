@@ -1,6 +1,6 @@
 <?php
 
-namespace ClearcodeHQ\CommandBusLauncher\Tests\Mocks;
+namespace tests\ClearcodeHQ\CommandBusLauncher\Mocks;
 
 use Assert\Assertion;
 

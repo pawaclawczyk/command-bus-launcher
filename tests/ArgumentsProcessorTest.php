@@ -1,18 +1,22 @@
 <?php
 
-namespace ClearcodeHQ\CommandBusLauncher\Tests;
+namespace tests\ClearcodeHQ\CommandBusLauncher;
 
 use ClearcodeHQ\CommandBusLauncher\ArgumentsProcessor;
 
 class ArgumentsProcessorTest extends \PHPUnit_Framework_TestCase
 {
-    /** @var ArgumentsProcessor */
+    /**
+     * @var ArgumentsProcessor
+     */
     private $sut;
 
-    /** @tests */
+    /**
+     * @tests
+     */
     public function it_process_transform_arguments_from_string()
     {
-        $arguments = $this->sut->process('first_arg second_arg');
+        $arguments = $this->sut->process(['first_arg', 'second_arg']);
 
         \PHPUnit_Framework_Assert::assertEquals(2, count($arguments));
 
@@ -20,10 +24,12 @@ class ArgumentsProcessorTest extends \PHPUnit_Framework_TestCase
         \PHPUnit_Framework_Assert::assertEquals('second_arg', $arguments[1]);
     }
 
-    /** @tests */
+    /**
+     * @tests
+     */
     public function it_converts_string_numbers_to_integer()
     {
-        $arguments = $this->sut->process('123 string_arg');
+        $arguments = $this->sut->process(['123', 'string_arg']);
 
         \PHPUnit_Framework_Assert::assertEquals(2, count($arguments));
 

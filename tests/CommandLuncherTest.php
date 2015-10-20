@@ -1,21 +1,34 @@
 <?php
 
-namespace ClearcodeHQ\CommandBusLauncher\Tests;
+namespace tests\ClearcodeHQ\CommandBusLauncher;
 
+use ClearcodeHQ\CommandBusLauncher\ArgumentsProcessor;
 use ClearcodeHQ\CommandBusLauncher\CommandCollector;
+use ClearcodeHQ\CommandBusLauncher\CommandBusLauncher;
 use ClearcodeHQ\CommandBusLauncher\CommandLuncher;
 use ClearcodeHQ\CommandBusLauncher\CommandReflection;
-use ClearcodeHQ\CommandBusLauncher\Tests\Mocks\DummyCommand;
+use tests\ClearcodeHQ\CommandBusLauncher\Mocks\DummyCommand;
 
 class CommandLuncherTest extends \PHPUnit_Framework_TestCase
 {
-    /** @var CommandLuncher */
+    /**
+     * @var CommandLuncher
+     */
     private $sut;
 
-    /** @var CommandCollector */
+    /**
+     * @var CommandCollector
+     */
     private $commandCollector;
 
-    /** @test */
+    /**
+     * @var ArgumentsProcessor
+     */
+    private $argumentsProcessor;
+
+    /**
+     * @test
+     */
     public function it_returns_command_to_lunch()
     {
         $this->commandCollector->getCommandByName('DummyCommand')->willReturn(
@@ -29,8 +42,9 @@ class CommandLuncherTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->commandCollector = $this->prophesize(CommandCollector::class);
+        $this->commandCollector   = $this->prophesize(CommandCollector::class);
+        $this->argumentsProcessor = $this->prophesize(ArgumentsProcessor::class);
 
-        $this->sut = new CommandLuncher($this->commandCollector->reveal());
+        $this->sut = new CommandLuncher($this->commandCollector->reveal(), $this->argumentsProcessor->reveal());
     }
 }

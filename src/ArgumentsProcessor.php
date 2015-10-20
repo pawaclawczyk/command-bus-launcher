@@ -4,16 +4,38 @@ namespace ClearcodeHQ\CommandBusLauncher;
 
 class ArgumentsProcessor
 {
-    public function process($argumentsString)
-    {
-        $arguments = explode(' ', $argumentsString);
+    /**
+     * @var ValueConveter[]
+     */
+    private $valueConveters;
 
+    public function __construct(array $valueConveters = [])
+    {
+        $this->valueConveters = $valueConveters;
+    }
+
+    /**
+     * @param $arguments
+     *
+     * @return mixed
+     */
+    public function process($arguments)
+    {
         foreach ($arguments as $key => $argument) {
-            if (is_numeric($argument)) {
-                $arguments[$key] = intval($argument);
-            }
+            $arguments[$key] = $this->convertValue($argument);
         }
 
         return $arguments;
+    }
+
+    public function convertValue($value)
+    {
+        foreach ($this->valueConveters as $valueConveter) {
+            if (null !== $convertedValue = $valueConveter->convert($value)) {
+                return $convertedValue;
+            }
+        }
+
+        return $value;
     }
 }

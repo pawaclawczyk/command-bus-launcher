@@ -44,14 +44,39 @@ class CommandReflection
     }
 
     /**
-     * @param array $arguemnts
+     * @param array              $inputArguemnts
+     * @param ArgumentsProcessor $argumentsProcessor
      *
      * @return object
+     *
+     * @throws InvalidCommandArgument
+     * @throws MissingCommandArgument
      */
-    public function createCommand(array $arguemnts)
+    public function createCommand(array $inputArguemnts, ArgumentsProcessor $argumentsProcessor)
     {
         $classReflection = new \ReflectionClass($this->commandClass);
 
-        return $classReflection->newInstanceArgs($arguemnts);
+        foreach ($this->parameters() as $commandArgument) {
+            if ($commandArgument->getClass() !== null) {
+                if (!array_key_exists($commandArgument->getPosition(), $inputArguemnts)) {
+                    throw new MissingCommandArgument(
+                        sprintf("Missing arguemnt %s for '%s' command", $commandArgument->getPosition() + 1, $this->commandName)
+                    );
+                }
+
+                $givenArgument         = $argumentsProcessor->convertValue($inputArguemnts[$commandArgument->getPosition()]);
+                $requiredArgumentClass = $commandArgument->getClass()->name;
+                if (!is_object($givenArgument) || $requiredArgumentClass !== get_class($givenArgument)) {
+                    throw new InvalidCommandArgument(
+                        sprintf(
+                            "Invalid argument for '%s' command. Expected parameter %s to be instance of '%s'",
+                            $this->commandName, $commandArgument->getPosition() + 1, $requiredArgumentClass
+                        )
+                    );
+                }
+            }
+        }
+
+        return $classReflection->newInstanceArgs($inputArguemnts);
     }
 }

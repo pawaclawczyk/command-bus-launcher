@@ -23,7 +23,7 @@
         }
     },
     "autoload-dev": {
-        "psr-4" : { "ClearcodeHQ\\CommandBusLauncher\\Tests\\" : "tests" }
+        "psr-4" : { "tests\\ClearcodeHQ\\CommandBusLauncher\\" : "tests" }
     },
     "require-dev": {
         "phpunit/phpunit" : "~5.0"

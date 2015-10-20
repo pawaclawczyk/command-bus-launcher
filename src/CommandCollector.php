@@ -4,7 +4,9 @@ namespace ClearcodeHQ\CommandBusLauncher;
 
 class CommandCollector
 {
-    /** @var CommandReflection[] */
+    /**
+     * @var CommandReflection[]
+     */
     public $commands = [];
 
     /**
@@ -12,13 +14,8 @@ class CommandCollector
      */
     public function processCommandServices(array $services)
     {
-        foreach ($services as $serviceId => $service) {
-            foreach ($service as $tags) {
-                if (array_key_exists('handles', $tags)) {
-                    $commandClass     = $tags['handles'];
-                    $this->commands[] = CommandReflection::fromClass($commandClass);
-                }
-            }
+        foreach ($services as $service) {
+            $this->commands[] = CommandReflection::fromClass($service);
         }
     }
 
@@ -30,6 +27,6 @@ class CommandCollector
             }
         }
 
-        throw new CommandDoesNotExist();
+        throw new CommandDoesNotExist(sprintf("Command '%s' does not exists", $commandName));
     }
 }
