@@ -3,6 +3,9 @@
 namespace tests\ClearcodeHQ\CommandBusLauncher;
 
 use ClearcodeHQ\CommandBusLauncher\ArgumentsProcessor;
+use ClearcodeHQ\CommandBusLauncher\ValueConveter\IntConveter;
+use ClearcodeHQ\CommandBusLauncher\ValueConveter\UuidConveter;
+use Ramsey\Uuid\Uuid;
 
 class ArgumentsProcessorTest extends \PHPUnit_Framework_TestCase
 {
@@ -18,8 +21,6 @@ class ArgumentsProcessorTest extends \PHPUnit_Framework_TestCase
     {
         $arguments = $this->sut->process(['first_arg', 'second_arg']);
 
-        \PHPUnit_Framework_Assert::assertEquals(2, count($arguments));
-
         \PHPUnit_Framework_Assert::assertEquals('first_arg', $arguments[0]);
         \PHPUnit_Framework_Assert::assertEquals('second_arg', $arguments[1]);
     }
@@ -27,18 +28,28 @@ class ArgumentsProcessorTest extends \PHPUnit_Framework_TestCase
     /**
      * @tests
      */
-    public function it_converts_string_numbers_to_integer()
+    public function it_converts_numeric_strings_to_integer()
     {
         $arguments = $this->sut->process(['123', 'string_arg']);
 
-        \PHPUnit_Framework_Assert::assertEquals(2, count($arguments));
-
-        \PHPUnit_Framework_Assert::assertEquals(123, $arguments[0]);
+        \PHPUnit_Framework_Assert::assertTrue(123 === $arguments[0]);
         \PHPUnit_Framework_Assert::assertEquals('string_arg', $arguments[1]);
+    }
+
+    /**
+     * @tests
+     */
+    public function it_converts_uuid_like_strings_to_uuid_object()
+    {
+        $arguments = $this->sut->process(['b1b250a0-938a-48f6-b0ca-0aeccff1288e']);
+
+        \PHPUnit_Framework_Assert::assertTrue(
+            Uuid::fromString('b1b250a0-938a-48f6-b0ca-0aeccff1288e')->equals($arguments[0])
+        );
     }
 
     public function setUp()
     {
-        $this->sut = new ArgumentsProcessor();
+        $this->sut = new ArgumentsProcessor([new IntConveter(), new UuidConveter()]);
     }
 }

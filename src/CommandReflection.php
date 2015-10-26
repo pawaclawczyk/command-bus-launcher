@@ -44,7 +44,7 @@ class CommandReflection
     }
 
     /**
-     * @param array              $inputArguemnts
+     * @param array              $arguments
      * @param ArgumentsProcessor $argumentsProcessor
      *
      * @return object
@@ -52,21 +52,24 @@ class CommandReflection
      * @throws InvalidCommandArgument
      * @throws MissingCommandArgument
      */
-    public function createCommand(array $inputArguemnts, ArgumentsProcessor $argumentsProcessor)
+    public function createCommand(array $arguments, ArgumentsProcessor $argumentsProcessor)
     {
         $classReflection = new \ReflectionClass($this->commandClass);
 
+        $inputArguments = $argumentsProcessor->process($arguments);
+
         foreach ($this->parameters() as $commandArgument) {
             if ($commandArgument->getClass() !== null) {
-                if (!array_key_exists($commandArgument->getPosition(), $inputArguemnts)) {
+                if (!array_key_exists($commandArgument->getPosition(), $inputArguments)) {
                     throw new MissingCommandArgument(
-                        sprintf("Missing arguemnt %s for '%s' command", $commandArgument->getPosition() + 1, $this->commandName)
+                        sprintf("Missing argument %s for '%s' command", $commandArgument->getPosition() + 1, $this->commandName)
                     );
                 }
 
-                $givenArgument         = $argumentsProcessor->convertValue($inputArguemnts[$commandArgument->getPosition()]);
+                $givenArgument         = $inputArguments[$commandArgument->getPosition()];
                 $requiredArgumentClass = $commandArgument->getClass()->name;
-                if (!is_object($givenArgument) || $requiredArgumentClass !== get_class($givenArgument)) {
+
+                if (!is_object($givenArgument) || !$givenArgument instanceof $requiredArgumentClass) {
                     throw new InvalidCommandArgument(
                         sprintf(
                             "Invalid argument for '%s' command. Expected parameter %s to be instance of '%s'",
@@ -77,6 +80,6 @@ class CommandReflection
             }
         }
 
-        return $classReflection->newInstanceArgs($inputArguemnts);
+        return $classReflection->newInstanceArgs($inputArguments);
     }
 }

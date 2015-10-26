@@ -23,7 +23,7 @@ class UuidConveterTest extends \PHPUnit_Framework_TestCase
         $uuid = $this->sut->convert('9d3e2d0a-f4d0-496d-9a5f-a00fe99b2053');
 
         $this->assertInstanceOf(Uuid::class, $uuid);
-        $this->assertEquals('9d3e2d0a-f4d0-496d-9a5f-a00fe99b2053', (string) $uuid);
+        $this->assertTrue(Uuid::fromString('9d3e2d0a-f4d0-496d-9a5f-a00fe99b2053')->equals($uuid));
     }
 
     /**
@@ -33,6 +33,6 @@ class UuidConveterTest extends \PHPUnit_Framework_TestCase
     {
         $uuid = $this->sut->convert('9d3efe99b2053');
 
-        $this->assertEquals(null, $uuid);
+        $this->assertTrue($uuid === null);
     }
 }

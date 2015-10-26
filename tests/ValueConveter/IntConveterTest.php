@@ -21,16 +21,16 @@ class IntConveterTest extends \PHPUnit_Framework_TestCase
     {
         $int = $this->sut->convert('123');
 
-        $this->assertEquals(123, $int);
+        $this->assertTrue(123 === $int);
     }
 
     /**
      * @test
      */
-    public function it_does_not_converts_non_numberic_string_to_int()
+    public function it_does_not_converts_non_numeric_string_to_int()
     {
         $invalidInt = $this->sut->convert('string');
 
-        $this->assertEquals(null, $invalidInt);
+        $this->assertTrue($invalidInt === null);
     }
 }

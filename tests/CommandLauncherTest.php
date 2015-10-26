@@ -7,7 +7,9 @@ use ClearcodeHQ\CommandBusLauncher\CommandCollector;
 use ClearcodeHQ\CommandBusLauncher\CommandBusLauncher;
 use ClearcodeHQ\CommandBusLauncher\CommandLauncher;
 use ClearcodeHQ\CommandBusLauncher\CommandReflection;
+use Ramsey\Uuid\Uuid;
 use tests\ClearcodeHQ\CommandBusLauncher\Mocks\DummyCommand;
+use tests\ClearcodeHQ\CommandBusLauncher\Mocks\DummyCommandWithUuid;
 
 class CommandLauncherTest extends \PHPUnit_Framework_TestCase
 {
@@ -29,15 +31,39 @@ class CommandLauncherTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function it_returns_command_to_launch()
+    public function it_returns_command_with_integer_to_launch()
     {
         $this->commandCollector->getCommandByName('DummyCommand')->willReturn(
             CommandReflection::fromClass(DummyCommand::class)
         );
 
+        $this->argumentsProcessor->process(['lorem ipsum', '123'])->willReturn(
+            ['lorem ipsum', 123]
+        );
+
         $command = $this->sut->getCommandToLaunch('DummyCommand', ['lorem ipsum', 123]);
 
         $this->assertInstanceOf(DummyCommand::class, $command);
+        $this->assertTrue(123 === $command->argument2);
+    }
+
+    /**
+     * @test
+     */
+    public function it_returns_command_with_uuid_to_launch()
+    {
+        $this->commandCollector->getCommandByName('DummyCommandWithUuid')->willReturn(
+            CommandReflection::fromClass(DummyCommandWithUuid::class)
+        );
+
+        $this->argumentsProcessor->process(['lorem ipsum', 'a1df6294-bcd9-43c5-8731-e3cd43401974'])->willReturn(
+            ['lorem ipsum', Uuid::fromString('a1df6294-bcd9-43c5-8731-e3cd43401974')]
+        );
+
+        $command = $this->sut->getCommandToLaunch('DummyCommandWithUuid', ['lorem ipsum', 'a1df6294-bcd9-43c5-8731-e3cd43401974']);
+
+        $this->assertInstanceOf(DummyCommandWithUuid::class, $command);
+        $this->assertTrue(Uuid::fromString('a1df6294-bcd9-43c5-8731-e3cd43401974')->equals($command->argument2));
     }
 
     public function setUp()

@@ -4,7 +4,9 @@ namespace tests\ClearcodeHQ\CommandBusLauncher;
 
 use ClearcodeHQ\CommandBusLauncher\ArgumentsProcessor;
 use ClearcodeHQ\CommandBusLauncher\CommandReflection;
+use ClearcodeHQ\CommandBusLauncher\ValueConveter\IntConveter;
 use ClearcodeHQ\CommandBusLauncher\ValueConveter\UuidConveter;
+use Ramsey\Uuid\Uuid;
 use tests\ClearcodeHQ\CommandBusLauncher\Mocks\DummyCommand;
 use tests\ClearcodeHQ\CommandBusLauncher\Mocks\DummyCommandWithUuid;
 
@@ -38,11 +40,11 @@ class CommandReflectionTest extends \PHPUnit_Framework_TestCase
      */
     public function it_does_not_create_command_when_invalid_arguments_are_given()
     {
-        $argumentProcessor = new ArgumentsProcessor([UuidConveter::class]);
+        $argumentProcessor = new ArgumentsProcessor([new UuidConveter()]);
         $commandReflection = CommandReflection::fromClass(DummyCommandWithUuid::class);
 
         $commandParameters = ['lorem ipsum', 2];
-        $command           = $commandReflection->createCommand($commandParameters, $argumentProcessor);
+        $commandReflection->createCommand($commandParameters, $argumentProcessor);
     }
 
     /**
@@ -50,12 +52,30 @@ class CommandReflectionTest extends \PHPUnit_Framework_TestCase
      */
     public function it_create_new_command_instance()
     {
-        $argumentProcessor = new ArgumentsProcessor([new UuidConveter()]);
+        $argumentProcessor = new ArgumentsProcessor([new IntConveter()]);
         $commandReflection = CommandReflection::fromClass(DummyCommand::class);
 
-        $commandParameters = ['lorem ipsum', 2];
+        $commandParameters = ['lorem ipsum', '2'];
         $command           = $commandReflection->createCommand($commandParameters, $argumentProcessor);
 
         \PHPUnit_Framework_Assert::assertInstanceOf(DummyCommand::class, $command);
+        \PHPUnit_Framework_Assert::assertEquals('lorem ipsum', $command->argument1);
+        \PHPUnit_Framework_Assert::assertTrue(2 === $command->argument2);
+    }
+
+    /**
+     * @test
+     */
+    public function it_create_new_command_with_uuid_instance()
+    {
+        $argumentProcessor = new ArgumentsProcessor([new UuidConveter()]);
+        $commandReflection = CommandReflection::fromClass(DummyCommandWithUuid::class);
+
+        $commandParameters = ['lorem ipsum', '1a67b1de-e3cb-471e-90d3-005341a29b3d'];
+        $command           = $commandReflection->createCommand($commandParameters, $argumentProcessor);
+
+        \PHPUnit_Framework_Assert::assertInstanceOf(DummyCommandWithUuid::class, $command);
+        \PHPUnit_Framework_Assert::assertEquals('lorem ipsum', $command->argument1);
+        \PHPUnit_Framework_Assert::assertTrue(Uuid::fromString('1a67b1de-e3cb-471e-90d3-005341a29b3d')->equals($command->argument2));
     }
 }

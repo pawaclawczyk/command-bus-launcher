@@ -28,7 +28,7 @@ class ArgumentsProcessor
         return $arguments;
     }
 
-    public function convertValue($value)
+    private function convertValue($value)
     {
         foreach ($this->valueConveters as $valueConveter) {
             if (null !== $convertedValue = $valueConveter->convert($value)) {

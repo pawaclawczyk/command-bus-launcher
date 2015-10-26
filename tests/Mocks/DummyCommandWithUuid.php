@@ -7,14 +7,14 @@ use Ramsey\Uuid\Uuid;
 class DummyCommandWithUuid
 {
     /** @var string */
-    private $argument1;
+    public $argument1;
 
     /** @var Uuid */
-    private $argumentUuid;
+    public $argument2;
 
     public function __construct($argument1, $argumentUuid)
     {
         $this->argument1     = $argument1;
-        $this->$argumentUuid = $argumentUuid;
+        $this->argument2 = $argumentUuid;
     }
 }
