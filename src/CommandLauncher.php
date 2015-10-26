@@ -2,7 +2,7 @@
 
 namespace ClearcodeHQ\CommandBusLauncher;
 
-class CommandLuncher
+class CommandLauncher
 {
     /**
      * @var CommandCollector
@@ -28,7 +28,7 @@ class CommandLuncher
      *
      * @throws CommandDoesNotExist
      */
-    public function getCommandToLunch($commandName, $arguments)
+    public function getCommandToLaunch($commandName, $arguments)
     {
         $commandReflection = $this->commandCollector->getCommandByName($commandName);
 

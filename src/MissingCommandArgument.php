@@ -2,6 +2,6 @@
 
 namespace ClearcodeHQ\CommandBusLauncher;
 
-class MissingCommandArgument extends CommandLuncherException
+class MissingCommandArgument extends CommandLauncherException
 {
 }

@@ -5,14 +5,14 @@ namespace tests\ClearcodeHQ\CommandBusLauncher;
 use ClearcodeHQ\CommandBusLauncher\ArgumentsProcessor;
 use ClearcodeHQ\CommandBusLauncher\CommandCollector;
 use ClearcodeHQ\CommandBusLauncher\CommandBusLauncher;
-use ClearcodeHQ\CommandBusLauncher\CommandLuncher;
+use ClearcodeHQ\CommandBusLauncher\CommandLauncher;
 use ClearcodeHQ\CommandBusLauncher\CommandReflection;
 use tests\ClearcodeHQ\CommandBusLauncher\Mocks\DummyCommand;
 
-class CommandLuncherTest extends \PHPUnit_Framework_TestCase
+class CommandLauncherTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var CommandLuncher
+     * @var CommandLauncher
      */
     private $sut;
 
@@ -29,13 +29,13 @@ class CommandLuncherTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function it_returns_command_to_lunch()
+    public function it_returns_command_to_launch()
     {
         $this->commandCollector->getCommandByName('DummyCommand')->willReturn(
             CommandReflection::fromClass(DummyCommand::class)
         );
 
-        $command = $this->sut->getCommandToLunch('DummyCommand', ['lorem ipsum', 123]);
+        $command = $this->sut->getCommandToLaunch('DummyCommand', ['lorem ipsum', 123]);
 
         $this->assertInstanceOf(DummyCommand::class, $command);
     }
@@ -45,6 +45,6 @@ class CommandLuncherTest extends \PHPUnit_Framework_TestCase
         $this->commandCollector   = $this->prophesize(CommandCollector::class);
         $this->argumentsProcessor = $this->prophesize(ArgumentsProcessor::class);
 
-        $this->sut = new CommandLuncher($this->commandCollector->reveal(), $this->argumentsProcessor->reveal());
+        $this->sut = new CommandLauncher($this->commandCollector->reveal(), $this->argumentsProcessor->reveal());
     }
 }

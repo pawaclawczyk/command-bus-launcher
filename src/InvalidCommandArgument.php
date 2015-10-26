@@ -2,6 +2,6 @@
 
 namespace ClearcodeHQ\CommandBusLauncher;
 
-class InvalidCommandArgument extends CommandLuncherException
+class InvalidCommandArgument extends CommandLauncherException
 {
 }

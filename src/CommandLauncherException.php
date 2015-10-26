@@ -2,6 +2,6 @@
 
 namespace ClearcodeHQ\CommandBusLauncher;
 
-class CommandLuncherException extends \Exception
+class CommandLauncherException extends \Exception
 {
 }
