@@ -10,6 +10,7 @@
         }
     ],
     "require": {
+        "php": ">=5.5",
         "beberlei/assert": "~2.4",
         "nesbot/carbon": "1.*",
         "mathiasverraes/money": "~1.2",
