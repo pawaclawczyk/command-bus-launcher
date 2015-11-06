@@ -66,6 +66,20 @@ class CommandLauncherTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue(Uuid::fromString('a1df6294-bcd9-43c5-8731-e3cd43401974')->equals($command->argument2));
     }
 
+    /**
+     * @test
+     */
+    public function it_returns_command_reflection()
+    {
+        $this->commandCollector->getCommandByName('DummyCommand')->willReturn(
+            CommandReflection::fromClass(DummyCommand::class)
+        );
+
+        $commandReflection = $this->sut->getCommandReflection('DummyCommand');
+
+        $this->assertInstanceOf(CommandReflection::class, $commandReflection);
+    }
+
     public function setUp()
     {
         $this->commandCollector   = $this->prophesize(CommandCollector::class);

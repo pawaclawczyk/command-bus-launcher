@@ -22,6 +22,16 @@ class CommandLauncher
 
     /**
      * @param $commandName
+     * @return CommandReflection
+     * @throws CommandDoesNotExist
+     */
+    public function getCommandReflection($commandName)
+    {
+        return $this->commandCollector->getCommandByName($commandName);
+    }
+
+    /**
+     * @param $commandName
      * @param $arguments
      *
      * @return object
