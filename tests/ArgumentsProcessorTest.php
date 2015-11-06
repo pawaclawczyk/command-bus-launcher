@@ -3,8 +3,8 @@
 namespace tests\ClearcodeHQ\CommandBusLauncher;
 
 use ClearcodeHQ\CommandBusLauncher\ArgumentsProcessor;
-use ClearcodeHQ\CommandBusLauncher\ValueConveter\IntConveter;
-use ClearcodeHQ\CommandBusLauncher\ValueConveter\UuidConveter;
+use ClearcodeHQ\CommandBusLauncher\ValueConverter\IntConverter;
+use ClearcodeHQ\CommandBusLauncher\ValueConverter\UuidConverter;
 use Ramsey\Uuid\Uuid;
 
 class ArgumentsProcessorTest extends \PHPUnit_Framework_TestCase
@@ -50,6 +50,6 @@ class ArgumentsProcessorTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->sut = new ArgumentsProcessor([new IntConveter(), new UuidConveter()]);
+        $this->sut = new ArgumentsProcessor([new IntConverter(), new UuidConverter()]);
     }
 }

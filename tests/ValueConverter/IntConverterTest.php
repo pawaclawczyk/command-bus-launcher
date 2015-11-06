@@ -1,18 +1,13 @@
 <?php
 
-namespace tests\ClearcodeHQ\CommandBusLauncher\ValueConveter;
+namespace tests\ClearcodeHQ\CommandBusLauncher\ValueConverter;
 
-use ClearcodeHQ\CommandBusLauncher\ValueConveter\IntConveter;
+use ClearcodeHQ\CommandBusLauncher\ValueConverter\IntConverter;
 
-class IntConveterTest extends \PHPUnit_Framework_TestCase
+class IntConverterTest extends \PHPUnit_Framework_TestCase
 {
-    /** @var IntConveter */
+    /** @var IntConverter */
     private $sut;
-
-    public function setUp()
-    {
-        $this->sut = new IntConveter();
-    }
 
     /**
      * @test
@@ -32,5 +27,10 @@ class IntConveterTest extends \PHPUnit_Framework_TestCase
         $invalidInt = $this->sut->convert('string');
 
         $this->assertTrue($invalidInt === null);
+    }
+
+    public function setUp()
+    {
+        $this->sut = new IntConverter();
     }
 }

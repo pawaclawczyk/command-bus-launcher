@@ -1,8 +1,8 @@
 <?php
 
-namespace ClearcodeHQ\CommandBusLauncher\ValueConveter;
+namespace ClearcodeHQ\CommandBusLauncher\ValueConverter;
 
-class IntConveter implements ValueConveter
+class IntConverter implements ValueConverter
 {
     public function convert($rawValue)
     {

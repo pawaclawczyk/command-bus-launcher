@@ -1,10 +1,10 @@
 <?php
 
-namespace ClearcodeHQ\CommandBusLauncher\ValueConveter;
+namespace ClearcodeHQ\CommandBusLauncher\ValueConverter;
 
 use Ramsey\Uuid\Uuid;
 
-class UuidConveter implements ValueConveter
+class UuidConverter implements ValueConverter
 {
     public function convert($rawValue)
     {

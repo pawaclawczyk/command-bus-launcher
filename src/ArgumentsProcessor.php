@@ -5,13 +5,13 @@ namespace ClearcodeHQ\CommandBusLauncher;
 class ArgumentsProcessor
 {
     /**
-     * @var ValueConveter[]
+     * @var ValueConverter[]
      */
-    private $valueConveters;
+    private $valueConverters;
 
-    public function __construct(array $valueConveters = [])
+    public function __construct(array $valueConverters = [])
     {
-        $this->valueConveters = $valueConveters;
+        $this->valueConverters = $valueConverters;
     }
 
     /**
@@ -30,8 +30,8 @@ class ArgumentsProcessor
 
     private function convertValue($value)
     {
-        foreach ($this->valueConveters as $valueConveter) {
-            if (null !== $convertedValue = $valueConveter->convert($value)) {
+        foreach ($this->valueConverters as $valueConverter) {
+            if (null !== $convertedValue = $valueConverter->convert($value)) {
                 return $convertedValue;
             }
         }

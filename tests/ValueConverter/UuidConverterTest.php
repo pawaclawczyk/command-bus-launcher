@@ -1,19 +1,14 @@
 <?php
 
-namespace tests\ClearcodeHQ\CommandBusLauncher\ValueConveter;
+namespace tests\ClearcodeHQ\CommandBusLauncher\ValueConverter;
 
-use ClearcodeHQ\CommandBusLauncher\ValueConveter\UuidConveter;
+use ClearcodeHQ\CommandBusLauncher\ValueConverter\UuidConverter;
 use Ramsey\Uuid\Uuid;
 
-class UuidConveterTest extends \PHPUnit_Framework_TestCase
+class UuidConverterTest extends \PHPUnit_Framework_TestCase
 {
-    /** @var UuidConveter */
+    /** @var UuidConverter */
     private $sut;
-
-    public function setUp()
-    {
-        $this->sut = new UuidConveter();
-    }
 
     /**
      * @test
@@ -34,5 +29,10 @@ class UuidConveterTest extends \PHPUnit_Framework_TestCase
         $uuid = $this->sut->convert('9d3efe99b2053');
 
         $this->assertTrue($uuid === null);
+    }
+
+    public function setUp()
+    {
+        $this->sut = new UuidConverter();
     }
 }
